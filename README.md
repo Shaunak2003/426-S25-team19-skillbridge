@@ -1,4 +1,4 @@
-# SkillBridge - 426-S25-team19
+# SkillBridge
 
 ## 🚀 Project Overview
 **SkillBridge** is a **peer-to-peer exchange platform** designed for students, teachers, and freelancers to **swap credits and learn skills** without expensive learning fees or unreliable freelancing platforms.
