@@ -1,16 +1,32 @@
-# 426-S25-team19-skillbridge
+# SkillBridge - 426-S25-team19
 
-Project Name: SkillBridge
+## 🚀 Project Overview
+**SkillBridge** is a **peer-to-peer exchange platform** designed for students, teachers, and freelancers to **swap credits and learn skills** without expensive learning fees or unreliable freelancing platforms.
 
-Team Name: FinTechies
+💡 **Key Features:**  
+✔️ **Free credits** for signing up  
+✔️ **Spend credits** to learn new skills  
+✔️ **Earn credits** by teaching skills  
+✔️ **Skill progression:** Novice → Intermediate → Advanced  
+✔️ **Cash out credits** for money (based on progress level)  
+✔️ **Create a profile**, **search for jobs**, and **swap skills**  
+✔️ **Flexible communication** – No restrictions on how you connect!  
 
-Team Members:
-Shaunak Karmarkar | Github: Shaunak2003
-Shaunak Pandya | Github: ShaunakPandya
-Ranveer Singh | Github: ransher-11
+---
 
-Project Description: 
-Get rid of expensive learning and guarantee-less freelancing, and come join SkillBridge! We are a peer-to-peer exchange platform to swap credits and learn skills, useful as a platform for students, teachers, and freelancers alike! Obtain free credits for sign up, spend credits to learn interests, earn credits by teaching skills, progress from novice to intermediate to advanced, cash out credits for money (frequency based on progress level)! To start your search, simply create a profile, upload a job search (or accept a skill-swap), establish communication (we do not dictate how you can talk!) and let the learning and teaching begin!
+## 👥 Team FinTechies
 
-Setup:
-    ""
+| Name               | GitHub Username       |
+|--------------------|----------------------|
+| **Shaunak Karmarkar** | [@Shaunak2003](https://github.com/Shaunak2003) |
+| **Shaunak Pandya**    | [@ShaunakPandya](https://github.com/ShaunakPandya) |
+| **Ranveer Singh**    | [@ransher-11](https://github.com/ransher-11) |
+
+---
+
+## 📌 Setup (To be updated)
+_Installation and setup instructions will be added in later sprints._
+
+---
+
+🔗 **Join SkillBridge and start your learning journey today!**  
