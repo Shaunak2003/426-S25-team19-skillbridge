@@ -1,7 +1,9 @@
 # 426-S25-team19-skillbridge
 
 Project Name: SkillBridge
+
 Team Name: FinTechies
+
 Team Members:
     Shaunak Karmarkar | Github: Shaunak2003
     Shaunak Pandya | Github: ShaunakPandya
