@@ -1,0 +1,45 @@
+[
+    {
+      "name": "Emily Johnson",
+      "level": "Intermediate",
+      "credits": 18,
+      "rating": 4.2
+    },
+    {
+      "name": "Michael Smith",
+      "level": "Advanced",
+      "credits": 35,
+      "rating": 4.9
+    },
+    {
+      "name": "Sarah Thompson",
+      "level": "Novice",
+      "credits": 8,
+      "rating": 3.7
+    },
+    {
+      "name": "James Anderson",
+      "level": "Intermediate",
+      "credits": 22,
+      "rating": 4.1
+    },
+    {
+      "name": "Olivia Brown",
+      "level": "Novice",
+      "credits": 5,
+      "rating": 3.4
+    },
+    {
+      "name": "William Davis",
+      "level": "Advanced",
+      "credits": 40,
+      "rating": 5.0
+    },
+    {
+      "name": "Sophia Wilson",
+      "level": "Intermediate",
+      "credits": 17,
+      "rating": 4.0
+    }
+  ]
+  
