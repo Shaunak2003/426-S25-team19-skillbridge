@@ -3,11 +3,11 @@ import React from 'react';
 const Header: React.FC = () => {
   return (
     <header className="header">
-      <div className="logo">SkillBridge</div>
-      <nav className="nav">
-        <a href="/">Home</a>
-        <a href="/dashboard">Dashboard</a>
+      <div className="header-logo">SkillBridge</div>
+      <nav className="header-nav">
+        <a href="/">Dashboard</a>
         <a href="/profile">Profile</a>
+        <a href="/settings">Settings</a>
       </nav>
     </header>
   );
