@@ -1,0 +1,209 @@
+/* ========== GLOBAL RESETS ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body, html {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(to bottom right, #f8fbff, #ecf2f8);
+    color: #1f2937;
+    height: 100%;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  /* ========== APP CONTAINER ========== */
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* ========== HEADER ========== */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, #0f172a, #1e293b);
+    color: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header-logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  
+  .header-nav a {
+    margin-left: 2rem;
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
+  }
+  
+  .header-nav a:hover {
+    opacity: 0.75;
+  }
+  
+  /* ========== MAIN CONTENT ========== */
+  .main-content {
+    flex: 1;
+    padding: 3rem 4rem;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+  
+  /* ========== TOP CARDS ========== */
+  .top-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+  }
+  
+  .card {
+    flex: 1;
+    min-width: 180px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 1.75rem;
+    text-align: center;
+    font-weight: 600;
+    color: #1f2937;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card.circle {
+    border-radius: 999px;
+    background: linear-gradient(to right, #36d1dc, #5b86e5);
+    color: white;
+    font-size: 1.4rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 120px;
+    margin: auto;
+  }
+  
+  /* ========== SEARCH BAR ========== */
+  .search-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .search-bar input {
+    flex: 1;
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    background-color: white;
+    font-size: 1rem;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+  }
+  
+  .search-bar input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    outline: none;
+  }
+  
+  .filter-btn {
+    padding: 0.85rem 1.2rem;
+    background: #1e40af;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .filter-btn:hover {
+    background: #1d4ed8;
+    transform: scale(1.03);
+  }
+  
+  /* ========== USER LIST ========== */
+  .user-list {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  }
+  
+  .user-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto;
+    padding: 1.25rem 2rem;
+    align-items: center;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .user-row:hover {
+    background-color: #f9fafb;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    background-color: #cbd5e1;
+  }
+  
+  .username {
+    font-weight: 700;
+    color: #1f2937;
+  }
+  
+  .msg-btn {
+    background-color: #22c55e;
+    color: white;
+    padding: 0.45rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .msg-btn:hover {
+    background-color: #16a34a;
+    transform: scale(1.05) translateY(-1px);
+  }
+  
+  /* ========== FOOTER ========== */
+  .footer {
+    background-color: #f9fafb;
+    color: #6b7280;
+    text-align: center;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    border-top: 1px solid #e5e7eb;
+  }
+  
