@@ -1,13 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { FaTimes, FaPlus } from 'react-icons/fa';
 import '../styles/global.css';
 
 const predefinedInterests = [
   'Coding', 'History', 'Math', 'Science', 'Finance', 'Economics', 'Spanish'
 ];
 
+type Keyword = {
+  id: number;
+  text: string;
+  isInterest?: boolean;
+};
+
 const Profile: React.FC = () => {
-  const [interests, setInterests] = useState<string[]>(['Coding', 'Economics', 'Spanish']);
-  const [customKeyword, setCustomKeyword] = useState('');
+  const [interests, setInterests] = useState<string[]>(() => {
+    const stored = localStorage.getItem('interests');
+    return stored ? JSON.parse(stored) : ['Coding', 'Economics', 'Spanish'];
+  });
+
+  const [keywords, setKeywords] = useState<Keyword[]>(() => {
+    const stored = localStorage.getItem('keywords');
+    return stored ? JSON.parse(stored) : [];
+  });
+  
+  const [keywordInput, setKeywordInput] = useState('');
+
+  useEffect(() => {
+    localStorage.setItem('interests', JSON.stringify(interests));
+  }, [interests]);
+
+  useEffect(() => {
+    localStorage.setItem('keywords', JSON.stringify(keywords));
+  }, [keywords]);
 
   const toggleInterest = (interest: string) => {
     setInterests((prev) =>
@@ -15,6 +39,30 @@ const Profile: React.FC = () => {
         ? prev.filter((i) => i !== interest)
         : [...prev, interest]
     );
+  };
+
+  const handleAddKeyword = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && keywordInput.trim()) {
+      const text = keywordInput.trim();
+      const isInterest = predefinedInterests.includes(text);
+      const newKeyword: Keyword = {
+        id: Date.now(),
+        text,
+        isInterest
+      };
+      setKeywords(prev => [...prev, newKeyword]);
+      setKeywordInput('');
+    }
+  };
+
+  const handleRemoveKeyword = (id: number) => {
+    setKeywords(prev => prev.filter(keyword => keyword.id !== id));
+  };
+
+  const handleAddToInterests = (text: string) => {
+    if (!interests.includes(text)) {
+      setInterests(prev => [...prev, text]);
+    }
   };
 
   return (
@@ -77,12 +125,43 @@ const Profile: React.FC = () => {
         {/* Keywords */}
         <div className="keywords-section" style={{ flex: 1 }}>
           <label>Add Keywords:</label>
-          <input
-            type="text"
-            placeholder="Type interests..."
-            value={customKeyword}
-            onChange={(e) => setCustomKeyword(e.target.value)}
-          />
+          <div className="keywords-input-container">
+            <input
+              type="text"
+              placeholder="Type keywords and press Enter..."
+              value={keywordInput}
+              onChange={(e) => setKeywordInput(e.target.value)}
+              onKeyPress={handleAddKeyword}
+              className="keyword-input"
+            />
+          </div>
+          <div className="keywords-list">
+            {keywords.map((keyword) => (
+              <div key={keyword.id} className="keyword-tag" style={{ 
+                background: keyword.isInterest ? 'var(--gradient-1)' : 'var(--gradient-purple)'
+              }}>
+                <span>{keyword.text}</span>
+                <div className="keyword-actions">
+                  {keyword.isInterest && !interests.includes(keyword.text) && (
+                    <button
+                      onClick={() => handleAddToInterests(keyword.text)}
+                      className="add-to-interests"
+                      title="Add to interests"
+                    >
+                      <FaPlus />
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleRemoveKeyword(keyword.id)}
+                    className="remove-keyword"
+                    title="Remove keyword"
+                  >
+                    <FaTimes />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
