@@ -1,11 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import mockUsers from '../data/mockUsers.json';
+// import mockUsers from '../data/mockUsers.json';
 import "../styles/global.css";
 import { FaSearch, FaTimes, FaPlus } from 'react-icons/fa';
 import { IoFilter } from 'react-icons/io5';
 
+import { useUser } from '../context/UserContext';
+
+/* type User = {
+  name: string;
+  level: string;
+  credits: number;
+  rating: number;
+  skills?: string[];
+}; */
+
 type User = {
+  id: number;
   name: string;
   level: string;
   credits: number;
@@ -87,10 +98,12 @@ const initialSavedCourses = [
 ];
 
 const Dashboard: React.FC = () => {
+
+  const { user } = useUser();
   const navigate = useNavigate();
   
   // Initialize state with localStorage data or defaults
-  const [filteredUsers, setFilteredUsers] = useState<User[]>(() => {
+  /* const [filteredUsers, setFilteredUsers] = useState<User[]>(() => {
     const stored = localStorage.getItem('filteredUsers');
     return stored ? JSON.parse(stored) : mockUsers;
   });
@@ -98,7 +111,10 @@ const Dashboard: React.FC = () => {
   const [allUsers, setAllUsers] = useState<User[]>(() => {
     const stored = localStorage.getItem('allUsers');
     return stored ? JSON.parse(stored) : mockUsers;
-  });
+  }); */
+
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
 
   const [filterVisible, setFilterVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState(() => {
@@ -118,31 +134,46 @@ const Dashboard: React.FC = () => {
     return stored ? JSON.parse(stored) : initialSavedCourses;
   });
 
-  const [userCredits, setUserCredits] = useState(() => {
+  /* const [userCredits, setUserCredits] = useState(() => {
     return parseInt(localStorage.getItem('userCredits') || '20');
   });
 
   const [completionPercentage, setCompletionPercentage] = useState(() => {
     return parseInt(localStorage.getItem('completionPercentage') || '50');
-  });
+  }); */
 
   const searchRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Save data to localStorage whenever it changes
   useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/users');
+        const data = await res.json();
+        setAllUsers(data);
+        setFilteredUsers(data);
+      } catch (error) {
+        console.error('Failed to fetch users:', error);
+      }
+    };
+  
+    fetchUsers();
+  }, []);
+
+  // Save data to localStorage whenever it changes
+  /* useEffect(() => {
     localStorage.setItem('filteredUsers', JSON.stringify(filteredUsers));
   }, [filteredUsers]);
 
   useEffect(() => {
     localStorage.setItem('allUsers', JSON.stringify(allUsers));
-  }, [allUsers]);
+  }, [allUsers]); */
 
   useEffect(() => {
     localStorage.setItem('searchQuery', searchQuery);
   }, [searchQuery]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     localStorage.setItem('currentCourses', JSON.stringify(currentCourses));
   }, [currentCourses]);
 
@@ -156,7 +187,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     localStorage.setItem('completionPercentage', completionPercentage.toString());
-  }, [completionPercentage]);
+  }, [completionPercentage]); */
 
   // Handle click outside of search suggestions and dropdowns
   useEffect(() => {
@@ -228,7 +259,7 @@ const Dashboard: React.FC = () => {
               onClick={() => handleClick('current')}
             >
               <span className="button-title">Current Courses</span>
-              <div className="course-count">{currentCourses.length}</div>
+              <div className="course-count">{user?.current_courses || 0}</div>
             </button>
             {activeDropdown === 'current' && (
               <div className="course-dropdown-panel">
@@ -268,7 +299,7 @@ const Dashboard: React.FC = () => {
               onClick={() => handleClick('saved')}
             >
               <span className="button-title">Saved Courses</span>
-              <div className="course-count">{savedCourses.length}</div>
+              <div className="course-count">{user?.saved_courses || 0}</div>
             </button>
             {activeDropdown === 'saved' && (
               <div className="course-dropdown-panel">
@@ -299,12 +330,12 @@ const Dashboard: React.FC = () => {
 
         <div className="credits-display">
           <span className="credits-label">Credits</span>
-          <span className="credits-value">{userCredits}</span>
+          <span className="credits-value">{user?.credits || 0}</span>
         </div>
 
         <div className="completion-display">
-          <div className="completion-circle" style={{ '--percentage': completionPercentage } as React.CSSProperties}>
-            <span>{completionPercentage}%</span>
+          <div className="completion-circle" style={{ '--percentage': Math.round((user?.rating || 0) * 20) } as React.CSSProperties}>
+            <span>{Math.round((user?.rating || 0) * 20)}  %</span>
           </div>
         </div>
       </div>
@@ -360,7 +391,7 @@ const Dashboard: React.FC = () => {
         {filterVisible && (
           <div className="filter-dropdown">
             <p>Filter by Level</p>
-            <button onClick={() => handleFilterByLevel('Beginner')}>Beginner</button>
+            <button onClick={() => handleFilterByLevel('Novice')}>Novice</button>
             <button onClick={() => handleFilterByLevel('Intermediate')}>
               Intermediate
             </button>

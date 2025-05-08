@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { FaTimes, FaPlus } from 'react-icons/fa';
 import '../styles/global.css';
 
+import { useUser } from '../context/UserContext';
+
 const predefinedInterests = [
   'Coding', 'History', 'Math', 'Science', 'Finance', 'Economics', 'Spanish'
 ];
@@ -13,6 +15,9 @@ type Keyword = {
 };
 
 const Profile: React.FC = () => {
+
+  const { user } = useUser();
+
   const [interests, setInterests] = useState<string[]>(() => {
     const stored = localStorage.getItem('interests');
     return stored ? JSON.parse(stored) : ['Coding', 'Economics', 'Spanish'];
@@ -74,7 +79,7 @@ const Profile: React.FC = () => {
         <div className="profile-fields" style={{ width: '100%' }}>
           <div className="profile-field">
             <label>Username:</label>
-            <div className="field-value">john_doe</div>
+            <div className="field-value">{user?.name || "John Doe"}</div>
             <button className="change-button">Change</button>
           </div>
           <div className="profile-field">
@@ -94,11 +99,11 @@ const Profile: React.FC = () => {
 
         {/* Credits Box */}
         <div className="credits-section" style={{ marginTop: '0.5rem' }}>
-          <div className="credits-value">20</div>
+          <div className="credits-value">{user?.credits || 0}</div>
           <span>Credits</span>
           <div className="completion-circle">50%</div>
           <button className="buy-credits">Buy Credits</button>
-          <div className="premium-button">⭐⭐⭐⭐☆</div>
+          <div className="premium-button">{'⭐'.repeat(Math.floor(user?.rating || 0))}{'☆'.repeat(5 - Math.floor(user?.rating || 0))}</div>
         </div>
       </div>
 
