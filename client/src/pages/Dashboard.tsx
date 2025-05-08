@@ -5,6 +5,8 @@ import "../styles/global.css";
 import { FaSearch, FaTimes, FaPlus } from 'react-icons/fa';
 import { IoFilter } from 'react-icons/io5';
 
+import { useUser } from '../context/UserContext';
+
 /* type User = {
   name: string;
   level: string;
@@ -19,6 +21,7 @@ type User = {
   level: string;
   credits: number;
   rating: number;
+  skills?: string[];
 };
 
 type CurrentCourse = {
@@ -95,6 +98,8 @@ const initialSavedCourses = [
 ];
 
 const Dashboard: React.FC = () => {
+
+  const { user } = useUser();
   const navigate = useNavigate();
   
   // Initialize state with localStorage data or defaults
@@ -129,13 +134,13 @@ const Dashboard: React.FC = () => {
     return stored ? JSON.parse(stored) : initialSavedCourses;
   });
 
-  const [userCredits, setUserCredits] = useState(() => {
+  /* const [userCredits, setUserCredits] = useState(() => {
     return parseInt(localStorage.getItem('userCredits') || '20');
   });
 
   const [completionPercentage, setCompletionPercentage] = useState(() => {
     return parseInt(localStorage.getItem('completionPercentage') || '50');
-  });
+  }); */
 
   const searchRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -168,7 +173,7 @@ const Dashboard: React.FC = () => {
     localStorage.setItem('searchQuery', searchQuery);
   }, [searchQuery]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     localStorage.setItem('currentCourses', JSON.stringify(currentCourses));
   }, [currentCourses]);
 
@@ -182,7 +187,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     localStorage.setItem('completionPercentage', completionPercentage.toString());
-  }, [completionPercentage]);
+  }, [completionPercentage]); */
 
   // Handle click outside of search suggestions and dropdowns
   useEffect(() => {
@@ -254,7 +259,7 @@ const Dashboard: React.FC = () => {
               onClick={() => handleClick('current')}
             >
               <span className="button-title">Current Courses</span>
-              <div className="course-count">{currentCourses.length}</div>
+              <div className="course-count">{user?.current_courses || 0}</div>
             </button>
             {activeDropdown === 'current' && (
               <div className="course-dropdown-panel">
@@ -294,7 +299,7 @@ const Dashboard: React.FC = () => {
               onClick={() => handleClick('saved')}
             >
               <span className="button-title">Saved Courses</span>
-              <div className="course-count">{savedCourses.length}</div>
+              <div className="course-count">{user?.saved_courses || 0}</div>
             </button>
             {activeDropdown === 'saved' && (
               <div className="course-dropdown-panel">
@@ -325,12 +330,12 @@ const Dashboard: React.FC = () => {
 
         <div className="credits-display">
           <span className="credits-label">Credits</span>
-          <span className="credits-value">{userCredits}</span>
+          <span className="credits-value">{user?.credits || 0}</span>
         </div>
 
         <div className="completion-display">
-          <div className="completion-circle" style={{ '--percentage': completionPercentage } as React.CSSProperties}>
-            <span>{completionPercentage}%</span>
+          <div className="completion-circle" style={{ '--percentage': Math.round((user?.rating || 0) * 20) } as React.CSSProperties}>
+            <span>{Math.round((user?.rating || 0) * 20)}  %</span>
           </div>
         </div>
       </div>
