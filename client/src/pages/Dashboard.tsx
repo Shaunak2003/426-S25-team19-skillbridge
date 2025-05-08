@@ -1,16 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import mockUsers from '../data/mockUsers.json';
+// import mockUsers from '../data/mockUsers.json';
 import "../styles/global.css";
 import { FaSearch, FaTimes, FaPlus } from 'react-icons/fa';
 import { IoFilter } from 'react-icons/io5';
 
-type User = {
+/* type User = {
   name: string;
   level: string;
   credits: number;
   rating: number;
   skills?: string[];
+}; */
+
+type User = {
+  id: number;
+  name: string;
+  level: string;
+  credits: number;
+  rating: number;
 };
 
 type CurrentCourse = {
@@ -90,7 +98,7 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   
   // Initialize state with localStorage data or defaults
-  const [filteredUsers, setFilteredUsers] = useState<User[]>(() => {
+  /* const [filteredUsers, setFilteredUsers] = useState<User[]>(() => {
     const stored = localStorage.getItem('filteredUsers');
     return stored ? JSON.parse(stored) : mockUsers;
   });
@@ -98,7 +106,10 @@ const Dashboard: React.FC = () => {
   const [allUsers, setAllUsers] = useState<User[]>(() => {
     const stored = localStorage.getItem('allUsers');
     return stored ? JSON.parse(stored) : mockUsers;
-  });
+  }); */
+
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
 
   const [filterVisible, setFilterVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState(() => {
@@ -129,14 +140,29 @@ const Dashboard: React.FC = () => {
   const searchRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Save data to localStorage whenever it changes
   useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/users');
+        const data = await res.json();
+        setAllUsers(data);
+        setFilteredUsers(data);
+      } catch (error) {
+        console.error('Failed to fetch users:', error);
+      }
+    };
+  
+    fetchUsers();
+  }, []);
+
+  // Save data to localStorage whenever it changes
+  /* useEffect(() => {
     localStorage.setItem('filteredUsers', JSON.stringify(filteredUsers));
   }, [filteredUsers]);
 
   useEffect(() => {
     localStorage.setItem('allUsers', JSON.stringify(allUsers));
-  }, [allUsers]);
+  }, [allUsers]); */
 
   useEffect(() => {
     localStorage.setItem('searchQuery', searchQuery);
@@ -360,7 +386,7 @@ const Dashboard: React.FC = () => {
         {filterVisible && (
           <div className="filter-dropdown">
             <p>Filter by Level</p>
-            <button onClick={() => handleFilterByLevel('Beginner')}>Beginner</button>
+            <button onClick={() => handleFilterByLevel('Novice')}>Novice</button>
             <button onClick={() => handleFilterByLevel('Intermediate')}>
               Intermediate
             </button>
