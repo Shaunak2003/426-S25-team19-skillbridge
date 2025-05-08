@@ -150,15 +150,17 @@ const Dashboard: React.FC = () => {
       try {
         const res = await fetch('http://localhost:5000/api/users');
         const data = await res.json();
-        setAllUsers(data);
-        setFilteredUsers(data);
+        const filteredData = data.filter((u: User) => u.name !== user?.name)
+        // console.log(filteredData.length, data.length)
+        setAllUsers(filteredData);
+        setFilteredUsers(filteredData);
       } catch (error) {
         console.error('Failed to fetch users:', error);
       }
     };
   
     fetchUsers();
-  }, []);
+  }, [user]);
 
   // Save data to localStorage whenever it changes
   /* useEffect(() => {

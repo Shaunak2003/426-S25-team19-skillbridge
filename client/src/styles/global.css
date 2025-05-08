@@ -1413,3 +1413,17 @@
       transform: translateY(0);
     }
   }
+
+  .user-status {
+    font-style: italic;
+    margin-left: auto;
+    font-size: 1rem;
+    color: black;
+    padding-right: 1.5rem;
+  }
+  
+  .user-status .login-message {
+    font-style: italic;
+    color: black;
+  }
+  

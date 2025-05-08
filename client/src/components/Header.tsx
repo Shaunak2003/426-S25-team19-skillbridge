@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import SwitchUserModal from './SwitchUserModal';
 
+import { useUser } from '../context/userContext';
+
 /* const Header: React.FC = () => {
   return (
     <header className="header">
@@ -18,10 +20,19 @@ import SwitchUserModal from './SwitchUserModal';
 const Header: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
+  const { user } = useUser();
+
   return (
     <header className="header">
       <h1 className='header-logo'>SkillBridge</h1>
       <nav className='header-nav'>
+      <div className="user-status">
+        {user ? (
+          <span>Welcome, <strong>{user.name}</strong>!</span>
+        ) : (
+          <span className="login-message">Login to Search!</span>
+        )}
+      </div>
         <Link to="/">Dashboard</Link>
         <Link to="/profile">Profile</Link>
         <Link to="/messages">Messages</Link>
