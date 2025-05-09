@@ -3,6 +3,8 @@ import { FaUserCircle, FaSearch } from 'react-icons/fa';
 import '../styles/global.css';
 import '../styles/messages.css';
 
+import { useUser } from '../context/UserContext';
+
 type User = {
   name: string;
   level: string;
@@ -34,6 +36,12 @@ const usersMock: { [key: string]: User } = {
 };
 
 const Messages: React.FC = () => {
+
+  /* const { user } = useUser();
+  
+  const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]); */
+
   const [selectedUser, setSelectedUser] = useState('');
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<MessageData>(() => {

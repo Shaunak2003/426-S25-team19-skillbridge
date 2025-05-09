@@ -24,9 +24,33 @@
 
 ---
 
-## 📌 Setup (To be updated)
-_Installation and setup instructions will be added in later sprints._
+## 📌 Setup 
+# To run the client 
+1️⃣ Navigate to the client folder
 
----
+    cd client
+
+2️⃣ Install dependencies
+
+    npm install
+
+3️⃣ Start the client
+
+    npm run dev
+
+4️⃣ Open the app in your browser at the provided localhost URL
+
+# To run the server
+1️⃣ Navigate to the server folder
+
+    cd server
+
+2️⃣ Install dependencies
+
+    npm install
+
+3️⃣ Start the server
+
+    npm run dev
 
 🔗 **Join SkillBridge and start your learning journey today!**  

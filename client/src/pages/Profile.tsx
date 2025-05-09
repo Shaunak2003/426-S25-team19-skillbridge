@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaTimes, FaPlus } from 'react-icons/fa';
 import '../styles/global.css';
 
-import { useUser } from '../context/UserContext';
+import { useUser } from '../context/userContext';
 
 const predefinedInterests = [
   'Coding', 'History', 'Math', 'Science', 'Finance', 'Economics', 'Spanish'
@@ -30,13 +30,29 @@ const Profile: React.FC = () => {
   
   const [keywordInput, setKeywordInput] = useState('');
 
-  useEffect(() => {
+  /* useEffect(() => {
     localStorage.setItem('interests', JSON.stringify(interests));
   }, [interests]);
 
   useEffect(() => {
     localStorage.setItem('keywords', JSON.stringify(keywords));
-  }, [keywords]);
+  }, [keywords]); */
+
+  useEffect(() => {
+    const fetchInterests = async () => {
+      if (!user) return;
+      try {
+        const res = await fetch(`http://localhost:5000/api/users/interests/${user.id}`);
+        const data = await res.json();
+        setInterests(data.interests || []);
+        setKeywords(data.keywords || []);
+      } catch (err) {
+        console.error('Failed to fetch user interests:', err);
+      }
+    };
+  
+    fetchInterests();
+  }, [user]);
 
   const toggleInterest = (interest: string) => {
     setInterests((prev) =>
