@@ -10,7 +10,7 @@ export const getConversation = async (req: Request, res: Response) => {
       `SELECT * FROM messages 
        WHERE (sender_id = $1 AND receiver_id = $2) 
           OR (sender_id = $2 AND receiver_id = $1) 
-       ORDER BY timestamp ASC`,
+       ORDER BY sent_at ASC`,
       [userId, otherUserId]
     );
     res.json(result.rows);

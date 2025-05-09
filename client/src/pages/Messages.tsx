@@ -1,98 +1,100 @@
+// src/pages/Messages.tsx
 import React, { useState, useEffect } from 'react';
 import { FaUserCircle, FaSearch } from 'react-icons/fa';
 import '../styles/global.css';
 import '../styles/messages.css';
-
 import { useUser } from '../context/UserContext';
 
 type User = {
+  id: number;
   name: string;
   level: string;
   credits: number;
   rating: number;
-  skills?: string[];
 };
 
-type MessageData = {
-  [key: string]: string[];
-};
-
-const messagesMock: MessageData = {
-  'ABC': ['Perfect!!'],
-  'XYZ': ['I am interested in Math.'],
-  'JKL': ['Nice'],
-  'Emily Johnson': ['Hi'],
-  'Michael Smith': ['Hi'],
-  'Sophia Wilson': ['Start a new conversation']
-};
-
-const usersMock: { [key: string]: User } = {
-  'ABC': { name: 'ABC', level: 'Advanced', credits: 30, rating: 4.8 },
-  'XYZ': { name: 'XYZ', level: 'Beginner', credits: 15, rating: 4.2 },
-  'JKL': { name: 'JKL', level: 'Intermediate', credits: 25, rating: 4.5 },
-  'Emily Johnson': { name: 'Emily Johnson', level: 'Advanced', credits: 40, rating: 4.9 },
-  'Michael Smith': { name: 'Michael Smith', level: 'Intermediate', credits: 20, rating: 4.3 },
-  'Sophia Wilson': { name: 'Sophia Wilson', level: 'Intermediate', credits: 17, rating: 4.5 }
+type Message = {
+  id: number;
+  sender_id: number;
+  receiver_id: number;
+  content: string;
+  sent_at: string;
 };
 
 const Messages: React.FC = () => {
-
-  /* const { user } = useUser();
-  
-  const [allUsers, setAllUsers] = useState<User[]>([]);
-  const [messages, setMessages] = useState<Message[]>([]); */
-
-  const [selectedUser, setSelectedUser] = useState('');
-  const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<MessageData>(() => {
-    const stored = localStorage.getItem('chatMessages');
-    return stored ? JSON.parse(stored) : messagesMock;
-  });
-  const [chatUser, setChatUser] = useState<User | null>(null);
+  const { user } = useUser();
+  const [users, setUsers] = useState<User[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredUsers, setFilteredUsers] = useState<string[]>(Object.keys(messagesMock));
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [conversation, setConversation] = useState<Message[]>([]);
+  const [input, setInput] = useState('');
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('selectedChatUser');
-    if (storedUser) {
-      const user = JSON.parse(storedUser);
-      setSelectedUser(user.name);
-      setChatUser(user);
-    }
-  }, []);
+    const fetchUsers = async () => {
+      const res = await fetch('http://localhost:5000/api/users');
+      const data = await res.json();
+      const otherUsers = data.filter((u: User) => u.id !== user?.id);
+      setUsers(otherUsers);
+      setFilteredUsers(otherUsers);
+    };
+
+    if (user) fetchUsers();
+  }, [user]);
 
   useEffect(() => {
-    localStorage.setItem('chatMessages', JSON.stringify(messages));
-  }, [messages]);
+    const fetchMessages = async () => {
+      if (!user || !selectedUser) return;
+      try {
+        const res = await fetch(`http://localhost:5000/api/messages/${user.id}/${selectedUser.id}`);
+        const data = await res.json();
+        setConversation(data);
+      } catch (err) {
+        console.error('Failed to fetch messages:', err);
+      }
+    };
+
+    fetchMessages();
+  }, [user, selectedUser]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    const filtered = Object.keys(messagesMock).filter(username => 
-      username.toLowerCase().includes(query.toLowerCase()) ||
-      usersMock[username].level.toLowerCase().includes(query.toLowerCase()) ||
-      messages[username]?.[messages[username].length - 1]?.toLowerCase().includes(query.toLowerCase())
+    const filtered = users.filter((u) =>
+      u.name.toLowerCase().includes(query.toLowerCase()) ||
+      u.level.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredUsers(filtered);
   };
 
-  const handleUserSelect = (username: string) => {
-    setSelectedUser(username);
-    setChatUser(usersMock[username]);
-    localStorage.setItem('selectedChatUser', JSON.stringify(usersMock[username]));
-  };
-
-  const handleSend = () => {
-    if (input.trim() && selectedUser) {
-      setMessages(prev => ({
-        ...prev,
-        [selectedUser]: [...(prev[selectedUser] || []), input.trim()]
-      }));
-      setInput('');
+  const handleSend = async () => {
+    const selectedUserId = selectedUser?.id
+    if (input.trim() && selectedUserId && user) {
+      const newMessage = {
+        sender_id: user.id,
+        receiver_id: selectedUserId,
+        content: input.trim()
+      };
+  
+      try {
+        const res = await fetch('http://localhost:5000/api/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newMessage)
+        });
+  
+        const data = await res.json();
+  
+        setConversation((prev) => [...prev, data]);
+        setInput('');
+      } catch (error) {
+        console.error('Failed to send message:', error);
+      }
     }
   };
 
   return (
     <div className="messages-container">
+      {/* Sidebar */}
       <section className="chat-list">
         <h2>Chats</h2>
         <div className="search-bar">
@@ -108,20 +110,17 @@ const Messages: React.FC = () => {
           </div>
         </div>
         <div className="users-list">
-          {filteredUsers.map((username) => (
+          {filteredUsers.map((u) => (
             <div
-              key={username}
-              className={`user-chat ${selectedUser === username ? 'active' : ''}`}
-              onClick={() => handleUserSelect(username)}
+              key={u.id}
+              className={`user-chat ${selectedUser?.id === u.id ? 'active' : ''}`}
+              onClick={() => setSelectedUser(u)}
             >
               <FaUserCircle className="avatar" />
               <div className="chat-preview">
-                <div className="chat-name">{username}</div>
-                <div className="chat-last-message">
-                  {messages[username]?.[messages[username].length - 1] || 'No messages yet'}
-                </div>
+                <div className="chat-name">{u.name}</div>
                 <div className="user-status">
-                  {usersMock[username].level} • {usersMock[username].rating}/5 • {usersMock[username].credits} credits
+                  {u.level} • {u.rating}/5 • {u.credits} credits
                 </div>
               </div>
             </div>
@@ -129,31 +128,32 @@ const Messages: React.FC = () => {
         </div>
       </section>
 
+      {/* Main Chat Window */}
       <section className="chat-main">
         {selectedUser ? (
           <>
             <div className="chat-header">
               <FaUserCircle className="avatar large" />
               <div>
-                <strong>{selectedUser}</strong>
+                <strong>{selectedUser.name}</strong>
                 <p className="status">
-                  {chatUser ? `${chatUser.level} • ${chatUser.rating}/5 • ${chatUser.credits} credits` : 'Active now'}
+                  {selectedUser.level} • {selectedUser.rating}/5 • {selectedUser.credits} credits
                 </p>
               </div>
             </div>
 
             <div className="chat-body">
-              {messages[selectedUser]?.map((msg, index) => (
+              {conversation.map((msg) => (
                 <div
-                  key={index}
-                  className={`chat-bubble ${index % 2 === 0 ? 'received' : 'sent'}`}
+                  key={msg.id}
+                  className={`chat-bubble ${msg.sender_id === user?.id ? 'sent' : 'received'}`}
                 >
-                  {msg}
+                  {msg.content}
                 </div>
               ))}
-              {(!messages[selectedUser] || messages[selectedUser].length === 0) && (
+              {conversation.length === 0 && (
                 <div className="chat-empty">
-                  Start a conversation with {selectedUser}
+                  Start a conversation with {selectedUser.name}
                 </div>
               )}
             </div>
