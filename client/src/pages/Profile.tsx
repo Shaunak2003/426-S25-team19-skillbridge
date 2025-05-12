@@ -42,7 +42,7 @@ const Profile: React.FC = () => {
     const fetchInterests = async () => {
       if (!user) return;
       try {
-        const res = await fetch(`http://localhost:5000/api/users/interests/${user.id}`);
+        const res = await fetch(`http://localhost:3000/api/users/interests/${user.id}`);
         const data = await res.json();
         setInterests(data.interests || []);
         setKeywords(data.keywords || []);

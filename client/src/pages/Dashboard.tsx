@@ -5,7 +5,7 @@ import "../styles/global.css";
 import { FaSearch, FaTimes, FaPlus } from 'react-icons/fa';
 import { IoFilter } from 'react-icons/io5';
 
-import { useUser } from '../context/UserContext';
+import { useUser } from '../context/userContext';
 
 /* type User = {
   name: string;
@@ -148,7 +148,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/users');
+        const res = await fetch('http://localhost:3000/api/users');
         const data = await res.json();
         const filteredData = data.filter((u: User) => u.name !== user?.name)
         // console.log(filteredData.length, data.length)

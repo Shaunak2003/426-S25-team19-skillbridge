@@ -32,7 +32,7 @@ const Messages: React.FC = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const res = await fetch('http://localhost:5000/api/users');
+      const res = await fetch('http://localhost:3000/api/users');
       const data = await res.json();
       const otherUsers = data.filter((u: User) => u.id !== user?.id);
       setUsers(otherUsers);
@@ -46,7 +46,7 @@ const Messages: React.FC = () => {
     const fetchMessages = async () => {
       if (!user || !selectedUser) return;
       try {
-        const res = await fetch(`http://localhost:5000/api/messages/${user.id}/${selectedUser.id}`);
+        const res = await fetch(`http://localhost:3000/api/messages/${user.id}/${selectedUser.id}`);
         const data = await res.json();
         setConversation(data);
       } catch (err) {
@@ -76,7 +76,7 @@ const Messages: React.FC = () => {
       };
   
       try {
-        const res = await fetch('http://localhost:5000/api/messages', {
+        const res = await fetch('http://localhost:3000/api/messages', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(newMessage)
