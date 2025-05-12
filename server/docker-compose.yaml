@@ -1,0 +1,68 @@
+version: '3.9'
+
+services:
+  auth-service:
+    build: ./services/auth-service
+    ports:
+      - '5001'
+    environment:
+      - PORT=5001
+      - DB_USER=postgres
+      - DB_PASSWORD=password123
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=skillbridge-db
+    depends_on:
+      - postgres
+
+  user-service:
+    build: ./services/user-service
+    ports:
+      - '5002'
+    environment:
+      - PORT=5002
+      - DB_USER=postgres
+      - DB_PASSWORD=password123
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=skillbridge-db
+    depends_on:
+      - postgres
+
+  message-service:
+    build: ./services/message-service
+    ports:
+      - '5003'
+    environment:
+      - PORT=5003
+      - DB_USER=postgres
+      - DB_PASSWORD=password123
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=skillbridge-db
+    depends_on:
+      - postgres
+
+  api-gateway:
+    build: ./services/api-service
+    ports:
+      - '3000'
+    depends_on:
+      - auth-service
+      - user-service
+      - message-service
+
+  postgres:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: skillbridge-db
+    ports:
+      - "5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

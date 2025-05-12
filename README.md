@@ -49,8 +49,8 @@
 
     npm install
 
-3️⃣ Start the server
+3️⃣ Start all microservices
 
-    npm run dev
+    npm run start:all
 
 🔗 **Join SkillBridge and start your learning journey today!**  
