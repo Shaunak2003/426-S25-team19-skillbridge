@@ -13,7 +13,7 @@ app.use(cors({
 app.use('/api/auth', createProxyMiddleware({
   target: 'http://localhost:5001',
   changeOrigin: true,
-  pathRewrite: (path, req) => {
+  pathRewrite: (path: any, req: any) => {
     const newPath = `/api/auth${req.url}`;
     console.log(`[REWRITE] Forwarding ${req.method} ${path} → ${newPath}`);
     return newPath;
@@ -23,14 +23,14 @@ app.use('/api/auth', createProxyMiddleware({
 app.use('/api/users', createProxyMiddleware({
   target: 'http://localhost:5002',
   changeOrigin: true,
-  pathRewrite: (path, req) => `/api/user${req.url}`
+  pathRewrite: (path: any, req: any) => `/api/user${req.url}`
 }));
 
 
 app.use('/api/messages', createProxyMiddleware({
   target: 'http://localhost:5003',
   changeOrigin: true,
-  pathRewrite: (path, req) => `/api/message${req.url}`
+  pathRewrite: (path: any, req: any) => `/api/message${req.url}`
 }));
 
 app.listen(3000, () => {
