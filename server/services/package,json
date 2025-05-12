@@ -1,0 +1,25 @@
+{
+  "name": "microservices-skillbridge",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start:gateway": "ts-node ./api-service/index.ts",
+    "start:auth": "ts-node ./auth-service/index.ts",
+    "start:user": "ts-node ./user-service/index.ts",
+    "start:message": "ts-node ./message-service/index.ts"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-http-proxy": "^1.6.3",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.11.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.5.9",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}

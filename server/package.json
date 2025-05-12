@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev src/index.ts", 
-    "gateway": "ts-node-dev services/api-gateway/src/index.ts",
-    "auth": "ts-node-dev services/auth-services/src/index.ts",
-    "user": "ts-node-dev services/user-services/src/index.ts",
-    "message": "ts-node-dev services/message-services/src/index.ts",
-    "dev:all": "concurrently \"cd services/api-gateway && npm run dev\" \"cd services/user-services && npm run dev\" \"cd services/auth-services && npm run dev\" \"cd services/message-services && npm run dev\""
+    "dev": "ts-node-dev src/index.ts",
+    "start:gateway": "ts-node services/api-service/index.ts",
+    "start:auth": "ts-node services/auth-service/index.ts",
+    "start:user": "ts-node services/user-service/index.ts",
+    "start:message": "ts-node services/message-service/index.ts",
+    "start:all": "concurrently \"npm run start:auth\" \"npm run start:user\" \"npm run start:message\" \"npm run start:gateway\""
   },
   "keywords": [],
   "author": "",
@@ -20,12 +20,16 @@
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "express-http-proxy": "^2.1.1",
+    "http-proxy-middleware": "^3.0.5",
     "pg": "^8.15.6"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
+    "@types/express-http-proxy": "^1.6.6",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.15",
     "@types/pg": "^8.15.0",
     "concurrently": "^9.1.2",
